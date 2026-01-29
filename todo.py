@@ -68,8 +68,33 @@ def undone(
     j().undone_Task(task) # Marca como undone
     
     typer.echo(f"\033[32mTarefa desfeita: {task}\033[m")
+
+
+# Mudar tarefa
+@app.command()
+def up(
+    old_task: str = typer.Argument(None),
+    task: str = typer.Argument(None),
+    desc: str = typer.Argument(None)
+):
+    # Tratamento de erro:
+    if old_task is None:
+        e().argumment_E(3)
+    if task is None: # Sem título
+        e().argumment_E(1)
+    if desc is None: # Sem descrição
+        e().argumment_E(2)
+    if not j().task_Exists(old_task): # Task não existe
+        e().existence_E(2) 
+    if j().task_Exists(task): # Task existe
+        e().existence_E(3) 
+
+    j().update_Task(old_task, task, desc)
+    
+    typer.echo(f"\033[32mTarefa atualizada: {task}\033[m")
         
         
+               
 if __name__ == "__main__":
     f().clear()
     main()

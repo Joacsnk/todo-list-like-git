@@ -35,8 +35,19 @@ class Json():
         tarefas.append(task) 
         
         self.escrever_Json(tarefas)
-           
-            
+    
+    
+    # Mudar tarefa
+    def update_Task(self, old_task, task, desc):
+        tarefas = self.ler_Json()
+        
+        for tarefa in tarefas:
+            if tarefa["titulo_tarefa"] == old_task:
+                tarefa["titulo_tarefa"] = task
+                tarefa["descricao"] = desc
+        
+        self.escrever_Json(tarefas)
+
     # Lista as tarefas no json        
     def list_Tasks(self): 
         tarefas = self.ler_Json()
@@ -128,7 +139,10 @@ class Error():
                 typer.echo("\033[31mErro argumment_01: Título da task não pode estar vazia.\033[m")
                 raise typer.Exit(code=1)
             case 2: # Descrição vazia
-                typer.echo("\033[31mErro argumment_02: Descrição não pode ser vazia.\033[m")
+                typer.echo("\033[31mErro argumment_02: Descrição não pode estar vazia.\033[m")
+                raise typer.Exit(code=1)
+            case 3:
+                typer.echo("\033[31mErro argumment_03: Título da task que deseja mudar não pode estar vazia.\033[m")
                 raise typer.Exit(code=1)
     
     
@@ -148,6 +162,9 @@ class Error():
                 raise typer.Exit(code=1)
             case 2: # Não existe nenhuma tarefa com esse título
                 typer.echo("\033[31mErro existence_02: Não existe tarefa com esse título.\033[m")
+                raise typer.Exit(code=1)
+            case 3: # já xiste tarefa com esse título
+                typer.echo("\033[31mErro existence_03: já existe tarefa com esse novo título.\033[m")
                 raise typer.Exit(code=1)
     
     
