@@ -79,6 +79,21 @@ class Json():
                     tarefa["done"] = True
                 
         self.escrever_Json(tarefas)
+    
+    
+    # Definir tarefa como "undone"
+    def undone_Task(self, task):
+        tarefas = self.ler_Json()
+            
+        for tarefa in tarefas:
+            if tarefa["titulo_tarefa"] == task:
+                if tarefa["done"] == False:
+                    Error().done_E(2)
+                else:
+                    tarefa["done"] = False
+                
+        self.escrever_Json(tarefas)
+    
 
 class Formatacao():
     
@@ -141,6 +156,9 @@ class Error():
         match n_error:
             case 1: # Já finalizada
                 typer.echo("\033[31mErro done_01: Tarefa já finalizada.\033[m")
+                raise typer.Exit(code=1)
+            case 2:
+                typer.echo("\033[31mErro done_02: Tarefa ainda não feita.\033[m")
                 raise typer.Exit(code=1)
                 
                 

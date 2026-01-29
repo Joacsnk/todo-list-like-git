@@ -53,6 +53,23 @@ def done(
     typer.echo(f"\033[32mTarefa realizada: {task}\033[m")
     
 
+# Deletar tarefa
+@app.command()
+def undone(
+    task: str = typer.Argument(None)
+):
+    # Tratamento de erros
+    if task is None: # Sem o argumento principal
+        e().argumment_E(1)
+    if not j().task_Exists(task): # Task não existe
+        e().existence_E(2)
+    
+    
+    j().undone_Task(task) # Marca como undone
+    
+    typer.echo(f"\033[32mTarefa desfeita: {task}\033[m")
+        
+        
 if __name__ == "__main__":
     f().clear()
     main()
