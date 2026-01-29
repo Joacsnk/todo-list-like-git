@@ -104,6 +104,20 @@ class Json():
                     tarefa["done"] = False
                 
         self.escrever_Json(tarefas)
+
+    
+    # Deletar tarefa
+    def delete_Task(self, task):
+        tarefas = self.ler_Json()
+        
+        for tarefa in tarefas:
+            if tarefa["titulo_tarefa"] == task:
+                tarefas.remove(tarefa)
+                break
+        else:
+            Error().existence_E(2)
+            
+        self.escrever_Json(tarefas)
     
 
 class Formatacao():

@@ -92,7 +92,21 @@ def up(
     j().update_Task(old_task, task, desc)
     
     typer.echo(f"\033[32mTarefa atualizada: {task}\033[m")
-        
+
+
+
+# Deletar tarefa
+@app.command()
+def delete(
+    task: str = typer.Argument(None)
+):
+    # Tratamento de erro
+    if task is None: # Sem título
+        e().argumment_E(1)
+    
+    j().delete_Task(task)
+    
+    typer.echo(f"\033[32mTarefa deletada: {task}\033[m")
         
                
 if __name__ == "__main__":
