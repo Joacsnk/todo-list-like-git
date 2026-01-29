@@ -1,5 +1,6 @@
 import os
 import json
+import typer
 
 class Json():
     
@@ -17,6 +18,8 @@ class Json():
         with open(self.file, "r", encoding="utf-8") as f: # carrega o json
             tarefas = json.load(f)
         
+        
+        
         tarefas.append(task) # adiciona
         
         with open(self.file, "w", encoding="utf-8") as f: # escreve essa adição e salva
@@ -28,7 +31,7 @@ class Json():
             tarefas = json.load(f)
             
         if len(tarefas) == 0: # verificar se existe tarefas
-            print("Não existe nenhuma tarefa cadastrada.\n")
+            Error().not_Exists_E(1)
 
         for index, tarefa in enumerate(tarefas, start=1): # lista as tarefas no loop 
 
@@ -41,6 +44,15 @@ class Json():
 
             print(f"{index}. [{status}] {titulo}") # visualização
   
+  
+    def task_Exists(self, titulo):
+        with open(self.file, "r", encoding="utf-8") as f:
+            tarefas = json.load(f)
+        
+        for i in tarefas:
+            if titulo == i["titulo_tarefa"]:
+                Error().duplicate_E(1)
+
 
 class Formatacao():
     
@@ -56,3 +68,35 @@ class Formatacao():
         }
         return tarefa
     
+    
+    def clear(self):
+        os.system("cls")
+        
+
+class Error():
+    
+    def __init__(self) -> None:
+        pass
+    
+    
+    def argumment_E(self, n_error):
+        match n_error:
+            case 1:
+                typer.echo("\033[31mErro argumment_01: Título da task não pode estar vazia.\033[m")
+                raise typer.Exit(code=1)
+            case 2:
+                typer.echo("\033[31mErro argumment_02: Descrição não pode ser vazia.\033[m")
+                raise typer.Exit(code=1)
+    
+    def duplicate_E(self, n_error):
+        match n_error:
+            case 1:
+                typer.echo("\033[31mErro duplicate_01: Tarefa já existente.\033[m")
+                raise typer.Exit(code=1)
+
+    def not_Exists_E(self, n_error):
+        match n_error:
+            case 1:
+                typer.echo("\033[31mErro not_exists_01: Não existe nenhuma tarefa.\033[m")
+                raise typer.Exit(code=1)
+                

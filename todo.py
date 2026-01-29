@@ -1,5 +1,5 @@
 import typer # edição de CLI
-from logic import Json as j, Formatacao as f
+from logic import Json as j, Formatacao as f, Error as e
 
 
 def main():
@@ -10,14 +10,27 @@ app = typer.Typer()
 
 
 @app.command()
-def add(task: str, desc: str): # adiciona uma tarefa (task: titulo, desc: descriçao)
+def add(
+    task: str = typer.Argument(None),
+    desc: str = typer.Argument(None),
+): # adiciona uma tarefa (task: titulo, desc: descriçao)
+    
+# tratamento de erro:
+    if task is None:
+        e().argumment_E(1)
+    if desc is None:
+        e().argumment_E(2)
+    j().task_Exists(task)
+    
     tarefa_dict = f().format_Task(task, desc) # formatação
     j().add_Task(tarefa_dict) # adiciona esse dict no json
-    print(f"Tarefa adicionada: {task}")
+    
+    typer.echo(f"\033[32mTarefa adicionada: {task}\033[m")
 
 @app.command()
 def list(): # lista as tarefas
     j().list_Tasks()
 
 if __name__ == "__main__":
+    f().clear()
     main()
