@@ -20,8 +20,10 @@ def add(
         e().argumment_E(1)
     if desc is None:
         e().argumment_E(2)
-    j().task_Exists(task)
+    if j().task_Exists(task):
+        e().duplicate_E(1)
     
+    # criação da tarefa
     tarefa_dict = f().format_Task(task, desc) # formatação
     j().add_Task(tarefa_dict) # adiciona esse dict no json
     
@@ -30,6 +32,19 @@ def add(
 @app.command()
 def list(): # lista as tarefas
     j().list_Tasks()
+
+@app.command()
+def done(task: str = typer.Argument(None)): # marca como feito a tarefa
+    if task is None:
+        e().argumment_E(1)
+    if not j().task_Exists(task):
+        e().existence_E(2)
+    
+    j().done_Task(task)
+    
+    typer.echo(f"\033[32mTarefa realizada: {task}\033[m")
+    
+
 
 if __name__ == "__main__":
     f().clear()

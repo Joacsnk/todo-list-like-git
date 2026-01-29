@@ -31,7 +31,7 @@ class Json():
             tarefas = json.load(f)
             
         if len(tarefas) == 0: # verificar se existe tarefas
-            Error().not_Exists_E(1)
+            Error().existence_E(1)
 
         for index, tarefa in enumerate(tarefas, start=1): # lista as tarefas no loop 
 
@@ -51,8 +51,19 @@ class Json():
         
         for i in tarefas:
             if titulo == i["titulo_tarefa"]:
-                Error().duplicate_E(1)
-
+                return True
+        return False
+    
+    def done_Task(self, task):
+        with open(self.file, "r", encoding="utf-8") as f:
+            tarefas = json.load(f)
+            
+        for tarefa in tarefas:
+            if tarefa["titulo_tarefa"] == task:
+                tarefa["done"] = True
+                
+        with open(self.file, "w", encoding="utf-8") as f:
+            json.dump(tarefas, f, indent=4, ensure_ascii=False)
 
 class Formatacao():
     
@@ -93,10 +104,15 @@ class Error():
             case 1:
                 typer.echo("\033[31mErro duplicate_01: Tarefa já existente.\033[m")
                 raise typer.Exit(code=1)
+                
 
-    def not_Exists_E(self, n_error):
+    def existence_E(self, n_error):
         match n_error:
             case 1:
-                typer.echo("\033[31mErro not_exists_01: Não existe nenhuma tarefa.\033[m")
+                typer.echo("\033[31mErro existence_01: Não existe nenhuma tarefa.\033[m")
                 raise typer.Exit(code=1)
+            case 2:
+                typer.echo("\033[31mErro existence_02: Não existe tarefa com esse título.\033[m")
+                raise typer.Exit(code=1)
+                
                 
