@@ -114,6 +114,12 @@ def delete(
     typer.echo(f"\033[32mTarefa deletada: {task}\033[m")
 
 
+# Ajuda com todos os comandos 
+@app.command()
+def help():
+    f().help()
+
+
 # CLi interitiva
 def interactive_shell():
     print("\n\033[32mTo-do list iniciado. clique 'CTRL + C' para sair.\033[m\n")

@@ -138,6 +138,20 @@ class Formatacao():
     # Limpar tela
     def clear(self):
         os.system("cls")
+    
+    
+    # Ajuda com os comandos
+    def help(self):
+        print("\033[32;4mEsse são todos os comandos todo, para qualquer situação:\033[m\n\n")
+        print("\033[32m add          \033[0;42m Adicione uma nova tarefa\033[m")
+        print("\033[32m list         \033[0;42m Liste todas as tarefas\033[m\n")
+        print("\033[32m done         \033[0;42m Marque a tarefa como feita\033[m")
+        print("\033[32m undone       \033[0;42m Marque a tarefa como desfeita\033[m\n")
+        print("\033[32m up           \033[0;42m Atualize a tarefa\033[m \n")
+        print("\033[32m delete       \033[0;42m Delete a tarefa\033[m \n")
+        print("\033[32m help         \033[0;42m Veja a lista de comandos do todo list\033[m")
+        
+        
         
 
 class Error():
@@ -181,7 +195,7 @@ class Error():
                 typer.echo("\033[31mErro existence_03: já existe tarefa com esse novo título.\033[m")
                 raise typer.Exit(code=1)
             case 4: # Não existe o comando
-                typer.echo("\033[31mErro existence_04: Não existe esse comando. Digite todo para visualizar todos os comandos.\033[m")
+                typer.echo("\033[31mErro existence_04: Não existe esse comando. Digite help para visualizar todos os comandos.\033[m")
 
 
     # Feito
