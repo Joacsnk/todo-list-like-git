@@ -180,8 +180,10 @@ class Error():
             case 3: # já xiste tarefa com esse título
                 typer.echo("\033[31mErro existence_03: já existe tarefa com esse novo título.\033[m")
                 raise typer.Exit(code=1)
-    
-    
+            case 4: # Não existe o comando
+                typer.echo("\033[31mErro existence_04: Não existe esse comando. Digite todo para visualizar todos os comandos.\033[m")
+
+
     # Feito
     def done_E(self, n_error):
         match n_error:

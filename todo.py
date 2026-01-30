@@ -1,12 +1,17 @@
+import sys
+import shlex
 import typer # Edição de CLI
 from logic import Json as j, Formatacao as f, Error as e
 
-app = typer.Typer()
+app = typer.Typer(invoke_without_command=True)
 
-# Def de inicialização
-def main():
-    j().check_Json() # Verifica se o json não existe ou está sem o []
-    app()
+
+# Caso não venha nenhum comand
+@app.callback()
+def main_callback(ctx: typer.Context):
+    if ctx.invoked_subcommand is None:
+        typer.echo("Erro: comando inválido. Use 'add' ou 'list'.")
+        raise typer.Exit(1)
 
 
 # Adição de uma nova tarefa. Necessário o título e sua descrição
@@ -107,8 +112,37 @@ def delete(
     j().delete_Task(task)
     
     typer.echo(f"\033[32mTarefa deletada: {task}\033[m")
-        
+
+
+# CLi interitiva
+def interactive_shell():
+    print("\n\033[32mTo-do list iniciado. clique 'CTRL + C' para sair.\033[m\n")
+    
+    while True: # Para manter o CLI rodando
+        try:
+            # Input
+            cmd = input("\n\033[33mtodo> \033[32m").strip()
+            if not cmd:  # Caso vazio
+                continue
+
+            # Converte string digitada em lista de argumentos
+            f().clear()
+            sys.argv = ["todo.py"] + shlex.split(cmd)
+            app(standalone_mode=False)
+
+
+        # Saida
+        except KeyboardInterrupt:
+            f().clear()
+            break
+        except SystemExit:
+            continue
+        except Exception:
+            e().existence_E(4)
+
                
 if __name__ == "__main__":
+    j().check_Json() 
     f().clear()
-    main()
+    interactive_shell()
+
